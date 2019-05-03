@@ -54,13 +54,8 @@ public class MainActivity extends AppCompatActivity {
     Button btn_votar;
 
     List<Categoria> categoriaList;
-    //0Todo el público
-    //1 Mujeres adultas
-    //2 Hombres adultos
-    //3 Mujeres adolescentes
-    //4 Hombres adolescentes
-    //5 Niños
 
+    List<Categoria> categoriaList2;
 
 
     @Override
@@ -97,13 +92,43 @@ public class MainActivity extends AppCompatActivity {
         superheroes.add(new Superheroe("Doctor Strange"));
 
 
+        categoriaList2=new ArrayList<Categoria>();
+        Categoria c= new Categoria();
+        c.setNombre("Niños");
+        c.setId(0);
+        c.setSuperheroesList(superheroes);
+        categoriaList2.add(c);
+
+        Categoria c1= new Categoria();
+        c1.setNombre("Hombres adolescentes");
+        c1.setId(1);
+        c1.setSuperheroesList(superheroes);
+        categoriaList2.add(c1);
+
+        Categoria c2= new Categoria();
+        c2.setNombre("Hombres adultos");
+        c2.setId(2);
+        c2.setSuperheroesList(superheroes);
+        categoriaList2.add(c2);
+
+        Categoria c3= new Categoria();
+        c3.setNombre("Mujeres adolescentes");
+        c3.setId(3);
+        c3.setSuperheroesList(superheroes);
+        categoriaList2.add(c3);
+
+        Categoria c4= new Categoria();
+        c4.setNombre("Mujeres adultas");
+        c4.setId(4);
+        c4.setSuperheroesList(superheroes);
+        categoriaList2.add(c4);
 
 
 
         inicializarFirebase();
         //if(databaseReference.child("Superheroes")== null){
-        //for (Superheroe s:superheroes ) {
-          //  databaseReference.child("Superheroes").child(s.getNombre()).setValue(s);
+        //for (Categoria s:categoriaList2 ) {
+          // databaseReference.child("Categorias").child(s.getId()+"").setValue(s);
         //}
         // }
         listarSuperheroes();
@@ -161,18 +186,18 @@ public class MainActivity extends AppCompatActivity {
                         if(eda>0 & eda<=10){
                             //guardar persona en la categoria Niños
                             categoriaObtenida="Niños";
-                            //3
-                            i=3;
+                            //0
+                            i=0;
                         }else if(eda>10 & eda<20){
                             //guardar persona en la categoria Mujeres adolescentes
                             categoriaObtenida="Mujeres adolescentes";
-                            //4
-                            i=4;
+                            //3
+                            i=3;
                         }else if(eda>=20){
                             //guardar persona en la categoria Mujeres adultas
                             categoriaObtenida="Mujeres adultas";
-                            //5
-                            i=5;
+                            //4
+                            i=4;
                         }
                     }
 
