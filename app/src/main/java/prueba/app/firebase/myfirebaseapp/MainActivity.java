@@ -81,57 +81,103 @@ public class MainActivity extends AppCompatActivity {
 
         listV_superheroes =findViewById(R.id.lv_datosPeronas);
 
+        //superheroes
         superheroes=new ArrayList<Superheroe>();
-        superheroes.add(new Superheroe("Spiderman"));
-        superheroes.add(new Superheroe("Ironman"));
-        superheroes.add(new Superheroe("Capitán América"));
-        superheroes.add(new Superheroe("Capitana Marvel"));
-        superheroes.add(new Superheroe("Hulk"));
-        superheroes.add(new Superheroe("La Viuda Negra"));
-        superheroes.add(new Superheroe("Thor"));
-        superheroes.add(new Superheroe("Doctor Strange"));
+        Superheroe s0=new Superheroe();
+        s0.setId(0);
+        s0.setVotos(0);
+        s0.setNombre("Capitana Marvel");
+        superheroes.add(s0);
 
 
+        Superheroe s1=new Superheroe();
+        s1.setId(1);
+        s1.setVotos(0);
+        s1.setNombre("Capitan América");
+        superheroes.add(s1);
+
+        Superheroe s2=new Superheroe();
+        s2.setId(2);
+        s2.setVotos(0);
+        s2.setNombre("Doctor Strange");
+        superheroes.add(s2);
+
+
+        Superheroe s3=new Superheroe();
+        s3.setId(3);
+        s3.setVotos(0);
+        s3.setNombre("Hulk");
+        superheroes.add(s3);
+
+        Superheroe s4=new Superheroe();
+        s4.setId(4);
+        s4.setVotos(0);
+        s4.setNombre("Ironman");
+        superheroes.add(s4);
+
+
+        Superheroe s5=new Superheroe();
+        s5.setId(5);
+        s5.setVotos(0);
+        s5.setNombre("La Viuda Negra");
+        superheroes.add(s5);
+
+        Superheroe s6=new Superheroe();
+        s6.setId(6);
+        s6.setVotos(0);
+        s6.setNombre("Spiderman");
+        superheroes.add(s6);
+
+        Superheroe s7=new Superheroe();
+        s7.setId(7);
+        s7.setVotos(0);
+        s7.setNombre("Thor");
+        superheroes.add(s7);
+
+
+        //categorias
         categoriaList2=new ArrayList<Categoria>();
         Categoria c= new Categoria();
         c.setNombre("Niños");
         c.setId(0);
-        c.setSuperheroesList(superheroes);
+        c.setSuperheroes(superheroes);
         categoriaList2.add(c);
 
         Categoria c1= new Categoria();
         c1.setNombre("Hombres adolescentes");
         c1.setId(1);
-        c1.setSuperheroesList(superheroes);
+        c1.setSuperheroes(superheroes);
         categoriaList2.add(c1);
 
         Categoria c2= new Categoria();
         c2.setNombre("Hombres adultos");
         c2.setId(2);
-        c2.setSuperheroesList(superheroes);
+        c2.setSuperheroes(superheroes);
         categoriaList2.add(c2);
 
         Categoria c3= new Categoria();
         c3.setNombre("Mujeres adolescentes");
         c3.setId(3);
-        c3.setSuperheroesList(superheroes);
+        c3.setSuperheroes(superheroes);
         categoriaList2.add(c3);
 
         Categoria c4= new Categoria();
         c4.setNombre("Mujeres adultas");
         c4.setId(4);
-        c4.setSuperheroesList(superheroes);
+        c4.setSuperheroes(superheroes);
         categoriaList2.add(c4);
 
 
 
         inicializarFirebase();
         //if(databaseReference.child("Superheroes")== null){
-        //for (Categoria s:categoriaList2 ) {
-          // databaseReference.child("Categorias").child(s.getId()+"").setValue(s);
-        //}
-        // }
+        for (Superheroe s:superheroes ) {
+          databaseReference.child("Superheroes").child(s.getId()+"").setValue(s);
+       // }
+        }
         listarSuperheroes();
+        categoriaList=new ArrayList<Categoria>();
+        inicializarCategorias();
 
         txt_superheroeSeleccionado=findViewById(R.id.txt_superheroeSeleccionado);
 
@@ -152,73 +198,98 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Metodo que permite categorizar la persona
                 String edad= edadP.getText().toString();
-                if(edad.equals("") || escogido.equals("") ){
+                if(edad.equals("") || escogido.equals("") || personaSelected==null ){
                     validacion();
 
                 }else{
-                    int eda=Integer.parseInt(edad);
-                    Persona p=new Persona();
-                    p.setUid(UUID.randomUUID().toString());
-                    p.setEdad(edad);
 
-                    String categoriaObtenida="";
-                    int i=0;
-                    if(escogido.equals("M")){
-                       // p.setCategoria("M");
-                        if(eda>0 & eda<=10){
-                            //guardar persona en la categoria Niños
-                            categoriaObtenida="Niños";
-                            //0
-                            i=0;
-                        }else if(eda>10 & eda<20){
-                            //guardar persona en la categoria Hombres adolescentes
-                            categoriaObtenida="Hombres adolescentes";
-                            //1
-                            i=1;
-                        }else if(eda>=20){
-                            //guardar persona en la categoria Hombres adultos
-                            categoriaObtenida="Hombres adultos";
-                            //2
-                            i=2;
+                    //superhero seleccionado
+                    if(personaSelected!=null){
+
+                        int eda= Integer.parseInt(edad);
+                        String categoriaObtenida="";
+                        int i=0;
+                        if(escogido.equals("M")){
+
+                            if(eda>0 & eda<=10){
+                                //guardar persona en la categoria Niños
+                                categoriaObtenida="Niños";
+                                //0
+                                i=0;
+                            }else if(eda>10 & eda<20){
+                                //guardar persona en la categoria Hombres adolescentes
+                                categoriaObtenida="Hombres adolescentes";
+                                //1
+                                i=1;
+                            }else if(eda>=20){
+                                //guardar persona en la categoria Hombres adultos
+                                categoriaObtenida="Hombres adultos";
+                                //2
+                                i=2;
+                            }
+                        }else if(escogido.equals("F")){
+                            // p.setCategoria("F");
+                            if(eda>0 & eda<=10){
+                                //guardar persona en la categoria Niños
+                                categoriaObtenida="Niños";
+                                //0
+                                i=0;
+                            }else if(eda>10 & eda<20){
+                                //guardar persona en la categoria Mujeres adolescentes
+                                categoriaObtenida="Mujeres adolescentes";
+                                //3
+                                i=3;
+                            }else if(eda>=20){
+                                //guardar persona en la categoria Mujeres adultas
+                                categoriaObtenida="Mujeres adultas";
+                                //4
+                                i=4;
+                            }
                         }
-                    }else if(escogido.equals("F")){
-                        // p.setCategoria("F");
-                        if(eda>0 & eda<=10){
-                            //guardar persona en la categoria Niños
-                            categoriaObtenida="Niños";
-                            //0
-                            i=0;
-                        }else if(eda>10 & eda<20){
-                            //guardar persona en la categoria Mujeres adolescentes
-                            categoriaObtenida="Mujeres adolescentes";
-                            //3
-                            i=3;
-                        }else if(eda>=20){
-                            //guardar persona en la categoria Mujeres adultas
-                            categoriaObtenida="Mujeres adultas";
-                            //4
-                            i=4;
+
+                    Categoria c= new Categoria();
+                    c.setId(i);
+                    c.setNombre(categoriaObtenida);
+
+                    if(categoriaList.size()==0){
+                        c.setCantidadUsuarios(1);
+                        superheroes.get(personaSelected.getId()).setVotos(1); //ver
+                        c.setSuperheroes(superheroes);
+                        databaseReference.child("Categorias").child(c.getNombre()).setValue(c);
+                    }else{
+
+                        boolean noEsta=false;
+                        Categoria c2= new Categoria();
+                        for (Categoria cat:categoriaList ) {
+                            if(cat.getId()!=i){
+                                noEsta=true;
+                                c2=cat;
+                            }
+                        }
+                        if(noEsta==true){
+                            c.setCantidadUsuarios(1);
+                            c.setSuperheroes(superheroes);
+                            superheroes.get(personaSelected.getId()).setVotos(1);
+                            databaseReference.child("Categorias").child(c.getNombre()).setValue(c);
+
+                        }else{
+
+                            //c=categoriaList.get(i);
+                            c.setCantidadUsuarios(c2.getCantidadUsuarios()+1);
+                            c2.getSuperheroes().add(personaSelected);
+                            c.setSuperheroes(c2.getSuperheroes());
+                            c.getSuperheroes().get(personaSelected.getId()).setVotos(personaSelected.getVotos()+1);
+                            databaseReference.child("Categorias").child(c.getNombre()).setValue(c);
+
                         }
                     }
 
 
 
-                    p.setCategoria(i);
-                    Superheroe s=new Superheroe();
-                    s.setNombre(escogido);
-                    p.setSuperheroe(s);
-
-                    Categoria c= categoriaList.get(i);
-                    c.getPersonas().get(i);
-                    c.getSuperheroesList();
-
-
-                    databaseReference.child("Categorias").child(c.getId()+"").setValue(c);
-
 
                     //Toast.makeText(this,"Voto agregado",Toast.LENGTH_SHORT).show();
                     //limpiarDatos();
-
+                    }
                 }
 
             }
@@ -226,6 +297,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void inicializarCategorias() {
+    }
 
 
     private void listarSuperheroes() {
@@ -250,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        
+
 
     }
 
@@ -258,13 +331,11 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.child("Categorias").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listSuper.clear();
+                categoriaList.clear();
                 for(DataSnapshot objSnapshot: dataSnapshot.getChildren()){
-                    Superheroe p= objSnapshot.getValue(Superheroe.class);
-                    listSuper.add(p);
-                    arrayAdapterSuperheroe =new ArrayAdapter<Superheroe>(MainActivity.this,
-                            android.R.layout.simple_list_item_1, listSuper);
-                    listV_superheroes.setAdapter(arrayAdapterSuperheroe);
+                    Categoria p= objSnapshot.getValue(Categoria.class);
+                    categoriaList.add(p);
+
                 }
             }
 
