@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +39,9 @@ public class Main2Activity extends AppCompatActivity {
     List<Categoria> categoriaList;
     Categoria categoriaSeleccionada;
 
+    List<Superheroe> superheroes;
+    List<Categoria> categoriaList2;
+
 
 
 
@@ -48,6 +52,10 @@ public class Main2Activity extends AppCompatActivity {
 
 
         inicializarFirebase();
+
+
+
+
         categoriaList=new ArrayList<Categoria>();
         listarCategorias();
 
@@ -64,72 +72,77 @@ public class Main2Activity extends AppCompatActivity {
         txt_cantUsuarios=findViewById(R.id.txt_cantUsuarios);
 
         rdg= (RadioGroup) findViewById(R.id.rdg);
+
         rdg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                ArrayList<Double> percent= new ArrayList<Double>();
 
-                if(checkedId==R.id.txtPublico){
-                    escogido="publico";
 
-                    categoriaSeleccionada=new Categoria();
+                    ArrayList<Double> percent= new ArrayList<Double>();
 
-                    int cant=0;
+                    if(checkedId==R.id.txtPublico){
+                        escogido="publico";
 
-                    for (Categoria c:categoriaList) {
-                        cant+=c.getCantidadUsuarios();
+                        categoriaSeleccionada=new Categoria();
+
+                        int cant=0;
+
+                        for (Categoria c:categoriaList) {
+                            cant+=c.getCantidadUsuarios();
+                        }
+
+
+                    }else if(checkedId==R.id.txtNinos){
+                        escogido="ninos";
+                        categoriaSeleccionada=categoriaList.get(4);
+
+
+                    }else if(checkedId==R.id.txtMAdultas){
+                        escogido="MAdultas";
+                        categoriaSeleccionada=categoriaList.get(3);
+
+                    }else if(checkedId==R.id.txtMAdolescente){
+                        escogido="MAdolescentes";
+                        categoriaSeleccionada=categoriaList.get(2);
+
+                    }else if(checkedId==R.id.txtHAdulto){
+                        escogido="HAdulto";
+                        categoriaSeleccionada=categoriaList.get(1);
+
+                    }else if(checkedId==R.id.txtHAdolescente){
+                        escogido="HAdolescente";
+                        categoriaSeleccionada=categoriaList.get(0);
+
+                    }
+
+                    percent.clear();
+
+
+                        for (Superheroe s:categoriaSeleccionada.getSuperheroes()) {
+
+                            double a= (((double)s.getVotos()/(double)categoriaSeleccionada.getCantidadUsuarios())*100);
+                            Log.e("HOLAAAAAAAAAAAA",a+"-----"+s.getNombre()+"---"+s.getVotos());
+
+                            percent.add(a);
+                        }
+
+
+                    if(percent.size()>0){
+                        txt_cantUsuarios.setText(categoriaSeleccionada.getCantidadUsuarios()+"");
+                        txt_capMarvel.setText(percent.get(0)+"%");
+                        txt_capAmerica.setText(percent.get(1)+"%");
+                        txt_drStrange.setText(percent.get(2)+"%");
+                        txt_hulk.setText(percent.get(3)+"%");
+                        txt_ironMan.setText(percent.get(4)+"%");
+                        txt_viudaNegra.setText(percent.get(5)+"%");
+                        txt_spiderman.setText(percent.get(6)+"%");
+                        txt_thor.setText(percent.get(7)+"%");
                     }
 
 
-                }else if(checkedId==R.id.txtNinos){
-                    escogido="ninos";
-                    categoriaSeleccionada=categoriaList.get(4);
-
-
-                }else if(checkedId==R.id.txtMAdultas){
-                    escogido="MAdultas";
-                    categoriaSeleccionada=categoriaList.get(3);
-
-                }else if(checkedId==R.id.txtMAdolescente){
-                    escogido="MAdolescentes";
-                    categoriaSeleccionada=categoriaList.get(2);
-
-                }else if(checkedId==R.id.txtHAdulto){
-                    escogido="HAdulto";
-                    categoriaSeleccionada=categoriaList.get(1);
-
-                }else if(checkedId==R.id.txtHAdolescente){
-                    escogido="HAdolescente";
-                    categoriaSeleccionada=categoriaList.get(0);
-
                 }
 
-                percent.clear();
-
-                if(escogido!="publico"){
-                    for (Superheroe s:categoriaSeleccionada.getSuperheroes()) {
-
-                        double a= (((double)s.getVotos()/(double)categoriaSeleccionada.getCantidadUsuarios())*100);
-                        Log.e("HOLAAAAAAAAAAAA",a+"-----"+s.getNombre()+"---"+s.getVotos());
-
-                        percent.add(a);
-                    }
-                }
-
-                if(percent.size()>0){
-                    txt_cantUsuarios.setText(categoriaSeleccionada.getCantidadUsuarios()+"");
-                    txt_capMarvel.setText(percent.get(0)+"%");
-                    txt_capAmerica.setText(percent.get(1)+"%");
-                    txt_drStrange.setText(percent.get(2)+"%");
-                    txt_hulk.setText(percent.get(3)+"%");
-                    txt_ironMan.setText(percent.get(4)+"%");
-                    txt_viudaNegra.setText(percent.get(5)+"%");
-                    txt_spiderman.setText(percent.get(6)+"%");
-                    txt_thor.setText(percent.get(7)+"%");
-                }
-
-            }
         });
 
         btn_votar= findViewById(R.id.btn_votar);
@@ -165,6 +178,12 @@ public class Main2Activity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void inicializarCategorias(){
+        for (Categoria s:categoriaList2 ) {
+            databaseReference.child("Categorias").child(s.getId()+"").setValue(s);
+        }
     }
 
 

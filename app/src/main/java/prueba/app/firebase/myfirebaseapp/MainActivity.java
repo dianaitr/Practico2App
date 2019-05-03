@@ -179,6 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
         listarSuperheroes();
         categoriaList=new ArrayList<Categoria>();
         listarCategorias();
@@ -383,7 +385,6 @@ public class MainActivity extends AppCompatActivity {
                     databaseReference.child("Persona").child(p.getUid()).setValue(p);
                     Toast.makeText(this,"Agregado",Toast.LENGTH_SHORT).show();
                     limpiarDatos();
-
                 }
                 break;
 
