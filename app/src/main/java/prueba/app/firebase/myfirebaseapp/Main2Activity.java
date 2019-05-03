@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -28,7 +29,7 @@ public class Main2Activity extends AppCompatActivity {
 
     RadioGroup rdg;
     String escogido;
-    TextView txt_capMarvel,txt_capAmerica,txt_drStrange,txt_hulk,txt_ironMan,txt_viudaNegra,txt_thor,txt_spiderman;
+    TextView txt_capMarvel,txt_capAmerica,txt_drStrange,txt_hulk,txt_ironMan,txt_viudaNegra,txt_thor,txt_spiderman,txt_cantUsuarios;
     Button btn_votar;
 
     FirebaseDatabase firebaseDatabase;
@@ -36,6 +37,8 @@ public class Main2Activity extends AppCompatActivity {
 
     List<Categoria> categoriaList;
     Categoria categoriaSeleccionada;
+
+
 
 
     @Override
@@ -58,6 +61,7 @@ public class Main2Activity extends AppCompatActivity {
         txt_spiderman=findViewById(R.id.txt_spiderman);
         txt_thor=findViewById(R.id.txt_thor);
 
+        txt_cantUsuarios=findViewById(R.id.txt_cantUsuarios);
 
         rdg= (RadioGroup) findViewById(R.id.rdg);
         rdg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -69,6 +73,13 @@ public class Main2Activity extends AppCompatActivity {
                 if(checkedId==R.id.txtPublico){
                     escogido="publico";
 
+                    categoriaSeleccionada=new Categoria();
+
+                    int cant=0;
+
+                    for (Categoria c:categoriaList) {
+                        cant+=c.getCantidadUsuarios();
+                    }
 
 
                 }else if(checkedId==R.id.txtNinos){
@@ -94,18 +105,30 @@ public class Main2Activity extends AppCompatActivity {
 
                 }
 
-                for (Superheroe s:categoriaSeleccionada.getSuperheroes()) {
-                    percent.add((0.0+(s.getVotos()/categoriaSeleccionada.getCantidadUsuarios()))*100);
+                percent.clear();
+
+                if(escogido!="publico"){
+                    for (Superheroe s:categoriaSeleccionada.getSuperheroes()) {
+
+                        double a= (((double)s.getVotos()/(double)categoriaSeleccionada.getCantidadUsuarios())*100);
+                        Log.e("HOLAAAAAAAAAAAA",a+"-----"+s.getNombre()+"---"+s.getVotos());
+
+                        percent.add(a);
+                    }
                 }
 
-                txt_capMarvel.setText(percent.get(0)+"%");
-                txt_capAmerica.setText(percent.get(1)+"%");
-                txt_drStrange.setText(percent.get(2)+"%");
-                txt_hulk.setText(percent.get(3)+"%");
-                txt_ironMan.setText(percent.get(4)+"%");
-                txt_viudaNegra.setText(percent.get(5)+"%");
-                txt_spiderman.setText(percent.get(6)+"%");
-                txt_thor.setText(percent.get(7)+"%");
+                if(percent.size()>0){
+                    txt_cantUsuarios.setText(categoriaSeleccionada.getCantidadUsuarios()+"");
+                    txt_capMarvel.setText(percent.get(0)+"%");
+                    txt_capAmerica.setText(percent.get(1)+"%");
+                    txt_drStrange.setText(percent.get(2)+"%");
+                    txt_hulk.setText(percent.get(3)+"%");
+                    txt_ironMan.setText(percent.get(4)+"%");
+                    txt_viudaNegra.setText(percent.get(5)+"%");
+                    txt_spiderman.setText(percent.get(6)+"%");
+                    txt_thor.setText(percent.get(7)+"%");
+                }
+
             }
         });
 
