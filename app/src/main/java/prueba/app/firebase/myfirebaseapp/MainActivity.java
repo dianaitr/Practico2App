@@ -210,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Categoria c= categoriaList.get(i);
                     c.getPersonas().get(i);
+                    c.getSuperheroesList();
+
 
                     databaseReference.child("Categorias").child(c.getId()+"").setValue(c);
 
@@ -248,22 +250,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference.child("Categorias").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                categoriaList.clear();
-                for(DataSnapshot objSnapshot: dataSnapshot.getChildren()){
-                    Categoria c= objSnapshot.getValue(Categoria.class);
-                    categoriaList.add(c);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        
 
     }
 
