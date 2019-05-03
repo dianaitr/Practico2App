@@ -2,8 +2,27 @@ package prueba.app.firebase.myfirebaseapp.model;
 
 public class Superheroe {
 
+    private int id;
     private String nombre;
-    private double porcentaje;
+    private int votos;
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getVotos() {
+        return votos;
+    }
+
+    public void setVotos(int votos) {
+        this.votos = votos;
+    }
 
     public Superheroe(String nombre) {
         this.nombre = nombre;
@@ -21,16 +40,10 @@ public class Superheroe {
         this.nombre = nombre;
     }
 
-    public double getPorcentaje() {
-        return porcentaje;
-    }
 
-    public void setPorcentaje(double porcentaje) {
-        this.porcentaje = porcentaje;
-    }
 
     @Override
     public String toString() {
-        return nombre+" ("+porcentaje+"%) ";
+        return nombre;
     }
 }

@@ -6,15 +6,17 @@ public class Persona {
     private String edad;
     private String sexo;
     private int categoria;
-    private Superheroe superheroe;
 
-    public Superheroe getSuperheroe() {
-        return superheroe;
+    public int getIdSuperheroe() {
+        return idSuperheroe;
     }
 
-    public void setSuperheroe(Superheroe superheroe) {
-        this.superheroe = superheroe;
+    public void setIdSuperheroe(int idSuperheroe) {
+        this.idSuperheroe = idSuperheroe;
     }
+
+    private int idSuperheroe;
+
 
     public String getEdad() {
         return edad;

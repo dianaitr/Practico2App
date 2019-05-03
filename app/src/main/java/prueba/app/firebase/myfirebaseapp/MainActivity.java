@@ -1,8 +1,10 @@
 package prueba.app.firebase.myfirebaseapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -173,11 +175,13 @@ public class MainActivity extends AppCompatActivity {
         //if(databaseReference.child("Superheroes")== null){
         for (Superheroe s:superheroes ) {
           databaseReference.child("Superheroes").child(s.getId()+"").setValue(s);
-       // }
         }
+
+
+
         listarSuperheroes();
         categoriaList=new ArrayList<Categoria>();
-        inicializarCategorias();
+        listarCategorias();
 
         txt_superheroeSeleccionado=findViewById(R.id.txt_superheroeSeleccionado);
 
@@ -214,36 +218,36 @@ public class MainActivity extends AppCompatActivity {
                             if(eda>0 & eda<=10){
                                 //guardar persona en la categoria Niños
                                 categoriaObtenida="Niños";
-                                //0
-                                i=0;
+
+                                i=4;
                             }else if(eda>10 & eda<20){
                                 //guardar persona en la categoria Hombres adolescentes
                                 categoriaObtenida="Hombres adolescentes";
-                                //1
-                                i=1;
+
+                                i=0;
                             }else if(eda>=20){
                                 //guardar persona en la categoria Hombres adultos
                                 categoriaObtenida="Hombres adultos";
-                                //2
-                                i=2;
+
+                                i=1;
                             }
                         }else if(escogido.equals("F")){
                             // p.setCategoria("F");
                             if(eda>0 & eda<=10){
                                 //guardar persona en la categoria Niños
                                 categoriaObtenida="Niños";
-                                //0
-                                i=0;
+
+                                i=4;
                             }else if(eda>10 & eda<20){
                                 //guardar persona en la categoria Mujeres adolescentes
                                 categoriaObtenida="Mujeres adolescentes";
-                                //3
-                                i=3;
+
+                                i=2;
                             }else if(eda>=20){
                                 //guardar persona en la categoria Mujeres adultas
                                 categoriaObtenida="Mujeres adultas";
-                                //4
-                                i=4;
+
+                                i=3;
                             }
                         }
 
@@ -251,54 +255,47 @@ public class MainActivity extends AppCompatActivity {
                     c.setId(i);
                     c.setNombre(categoriaObtenida);
 
-                    if(categoriaList.size()==0){
-                        c.setCantidadUsuarios(1);
-                        superheroes.get(personaSelected.getId()).setVotos(1); //ver
-                        c.setSuperheroes(superheroes);
-                        databaseReference.child("Categorias").child(c.getNombre()).setValue(c);
-                    }else{
+                        Log.e(">>>>>>>>>>>>>", categoriaList.size()+"");
 
-                        boolean noEsta=false;
-                        Categoria c2= new Categoria();
-                        for (Categoria cat:categoriaList ) {
-                            if(cat.getId()!=i){
-                                noEsta=true;
-                                c2=cat;
-                            }
-                        }
-                        if(noEsta==true){
-                            c.setCantidadUsuarios(1);
-                            c.setSuperheroes(superheroes);
-                            superheroes.get(personaSelected.getId()).setVotos(1);
+                        //boolean noEsta=false;
+                        //Categoria c2= new Categoria();
+                        //for (Categoria cat:categoriaList ) {
+                          //  if(cat.getId()!=i){
+                            //    noEsta=true;
+                              //  c2=cat;
+                            //}
+                        //}
+                        //if(noEsta==true){
+                          //  c.setCantidadUsuarios(1);
+                        // c.setSuperheroes(superheroes);
+                        // superheroes.get(personaSelected.getId()).setVotos(1);
+                        //  databaseReference.child("Categorias").child(c.getNombre()).setValue(c);
+
+                        // }else{
+
+                            c=categoriaList.get(i);
+                            c.setCantidadUsuarios(c.getCantidadUsuarios()+1);
+
+                            c.getSuperheroes().get(personaSelected.getId()).setVotos(c.getSuperheroes().get(personaSelected.getId()).getVotos()+1);
                             databaseReference.child("Categorias").child(c.getNombre()).setValue(c);
 
-                        }else{
 
-                            //c=categoriaList.get(i);
-                            c.setCantidadUsuarios(c2.getCantidadUsuarios()+1);
-                            c2.getSuperheroes().add(personaSelected);
-                            c.setSuperheroes(c2.getSuperheroes());
-                            c.getSuperheroes().get(personaSelected.getId()).setVotos(personaSelected.getVotos()+1);
-                            databaseReference.child("Categorias").child(c.getNombre()).setValue(c);
+                        Intent r= new Intent(MainActivity.this, Main2Activity.class);
 
-                        }
-                    }
+                        startActivity(r);
 
 
-
-
-                    //Toast.makeText(this,"Voto agregado",Toast.LENGTH_SHORT).show();
-                    //limpiarDatos();
                     }
                 }
 
             }
+
+
         });
 
     }
 
-    private void inicializarCategorias() {
-    }
+
 
 
     private void listarSuperheroes() {
@@ -360,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        //getMenuInflater().inflate(R.menu.menu_main,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
